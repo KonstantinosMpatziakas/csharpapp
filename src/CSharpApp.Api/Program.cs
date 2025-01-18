@@ -1,3 +1,5 @@
+using CSharpApp.Core.Dtos;
+
 var builder = WebApplication.CreateBuilder(args);
 
 var logger = new LoggerConfiguration().ReadFrom.Configuration(builder.Configuration).CreateLogger();
@@ -45,6 +47,22 @@ versionedEndpointRouteBuilder.MapGet("api/v{version:apiVersion}/getcategory/{id:
     return categories;
 })
     .WithName("GetCategory")
+    .HasApiVersion(1.0);
+
+versionedEndpointRouteBuilder.MapPost("api/v{version:apiVersion}/addcategory", async (Category cat, ICategoriesService categoriesService) =>
+{
+    var categories = await categoriesService.AddCategory(cat.Name!, cat.Image!);
+    return categories;
+})
+    .WithName("AddCategory")
+    .HasApiVersion(1.0);
+
+versionedEndpointRouteBuilder.MapPut("api/v{version:apiVersion}/updatecategory/{id:int}", async (int id, Category cat, ICategoriesService categoriesService) =>
+{
+    var categories = await categoriesService.UpdateCategory(id, cat.Name!, cat.Image!);
+    return categories;
+})
+    .WithName("UpdateCategory")
     .HasApiVersion(1.0);
 
 app.Run();

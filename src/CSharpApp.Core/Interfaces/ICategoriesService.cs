@@ -12,5 +12,7 @@ namespace CSharpApp.Core.Interfaces
     {
         Task<IReadOnlyCollection<Category>> GetCategories();
         Task<Category> GetCategoryById(int category);
+        Task<Category> AddCategory(string name, string imageUrl);
+        Task<Category> UpdateCategory(int id, string name, string imageUrl);
     }
 }

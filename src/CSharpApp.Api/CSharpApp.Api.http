@@ -7,6 +7,7 @@ Accept: application/json
 
 ###
 
+### CATEGORIES SECTION ###
 GET {{HostAddress}}/api/{{Version}}/getcategories
 Accept: application/json
 
@@ -16,3 +17,14 @@ GET {{HostAddress}}/api/{{Version}}/getcategory/{{Id}}
 Accept: application/json
 
 ###
+
+POST {{HostAddress}}/api/{{Version}}/addcategory
+Content-Type: application/json
+###
+
+PUT {{HostAddress}}/api/{{Version}}/updatecategory/{{Id}}
+Content-Type: application/json
+
+###
+
+### CATEGORIES SECTION ###
