@@ -4,4 +4,15 @@
 GET {{HostAddress}}/api/{{Version}}/getproducts
 Accept: application/json
 
+
+###
+
+GET {{HostAddress}}/api/{{Version}}/getcategories
+Accept: application/json
+
+###
+
+GET {{HostAddress}}/api/{{Version}}/getcategory/{{Id}}
+Accept: application/json
+
 ###
