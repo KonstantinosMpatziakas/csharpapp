@@ -1,3 +1,5 @@
+using Polly.Extensions.Http;
+
 var builder = WebApplication.CreateBuilder(args);
 
 var logger = new LoggerConfiguration().ReadFrom.Configuration(builder.Configuration).CreateLogger();
@@ -10,6 +12,18 @@ builder.Services.AddDefaultConfiguration();
 builder.Services.AddHttpConfiguration();
 builder.Services.AddProblemDetails();
 builder.Services.AddApiVersioning();
+builder.Services.AddSingleton<IProductsService, ProductsService>();
+
+builder.Services.AddHttpClient("productsApi", client =>
+{
+    client.BaseAddress = new Uri(builder.Configuration["RestApiSettings:BaseUrl"]!);
+})
+    .AddPolicyHandler(HttpPolicyExtensions
+        .HandleTransientHttpError()
+        .WaitAndRetryAsync(3, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt))))
+    .AddPolicyHandler(HttpPolicyExtensions
+        .HandleTransientHttpError()
+        .CircuitBreakerAsync(5, TimeSpan.FromSeconds(30)));
 
 var app = builder.Build();
 
