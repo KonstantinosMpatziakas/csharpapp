@@ -1,7 +1,3 @@
-using Polly.Extensions.Http;
-using Polly;
-using Microsoft.Extensions.DependencyInjection;
-
 namespace CSharpApp.Infrastructure.Configuration;
 
 public static class DefaultConfiguration
@@ -18,7 +14,7 @@ public static class DefaultConfiguration
 
         services.AddHttpClient("productsApi", client =>
         {
-            client.BaseAddress = new Uri(configuration!.GetSection(nameof(RestApiSettings)).GetSection("BaseUrl").Value);
+            client.BaseAddress = new Uri(configuration!.GetSection(nameof(RestApiSettings)).GetSection("BaseUrl").Value!);
         });
 
         return services;
