@@ -1,4 +1,5 @@
 using CSharpApp.Core.Dtos;
+using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,6 +32,22 @@ versionedEndpointRouteBuilder.MapGet("api/v{version:apiVersion}/getproducts", as
         return products;
     })
     .WithName("GetProducts")
+    .HasApiVersion(1.0);
+
+versionedEndpointRouteBuilder.MapGet("api/v{version:apiVersion}/getproduct/{id:int}", async (int id, IProductsService productsService) =>
+{
+    var products = await productsService.GetProductById(id);
+    return products;
+})
+    .WithName("GetProduct")
+    .HasApiVersion(1.0);
+
+versionedEndpointRouteBuilder.MapPost("api/v{version:apiVersion}/addproduct", async ([FromBody]AddProductRequest request, [FromServices]IProductsService productsService) =>
+{
+    var products = await productsService.AddProduct(request);
+    return products; 
+})
+    .WithName("AddProduct")
     .HasApiVersion(1.0);
 
 versionedEndpointRouteBuilder.MapGet("api/v{version:apiVersion}/getcategories", async (ICategoriesService categoriesService) =>

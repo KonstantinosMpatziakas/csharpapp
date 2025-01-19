@@ -1,11 +1,26 @@
 @HostAddress = http://localhost:5225
 @Version = v1
 
+
+### PRODUCTS SECTION ###
 GET {{HostAddress}}/api/{{Version}}/getproducts
 Accept: application/json
 
 
 ###
+
+GET {{HostAddress}}/api/{{Version}}/getproduct/{{Id}}
+Accept: application/json
+
+###
+
+POST {{HostAddress}}/api/{{Version}}/addproduct
+Content-Type: application/json
+###
+
+### PRODUCTS SECTION ###
+
+
 
 ### CATEGORIES SECTION ###
 GET {{HostAddress}}/api/{{Version}}/getcategories
