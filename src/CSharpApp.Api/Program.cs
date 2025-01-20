@@ -50,6 +50,16 @@ versionedEndpointRouteBuilder.MapPost("api/v{version:apiVersion}/addproduct", as
     .WithName("AddProduct")
     .HasApiVersion(1.0);
 
+versionedEndpointRouteBuilder.MapPut("api/v{version:apiVersion}/updateproduct/{id:int}", async (int id, UpdateProductRequest request, [FromServices] IProductsService productsService) =>
+{
+    var products = await productsService.UpdateProduct(id, request);
+    return products;
+})
+    .WithName("UpdateProduct")
+    .HasApiVersion(1.0);
+
+
+
 versionedEndpointRouteBuilder.MapGet("api/v{version:apiVersion}/getcategories", async (ICategoriesService categoriesService) =>
 {
     var categories = await categoriesService.GetCategories();

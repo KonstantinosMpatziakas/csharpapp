@@ -71,25 +71,23 @@ public class ProductsService : IProductsService
 
     public async Task<Category> UpdateProduct(int id, UpdateProductRequest request)
     {
-        try
+       
+        var client = _httpClientFactory.CreateClient("productsApi");
+
+        var options = new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
+        var jsonContent = JsonSerializer.Serialize<UpdateProductRequest>(request);
+        var data = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+
+        var response = await client.PutAsync($"{_restApiSettings.Products!}/{id}", data);
+        if (!response.IsSuccessStatusCode)
         {
-            var client = _httpClientFactory.CreateClient("productsApi");
-
-            var options = new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
-            var jsonContent = JsonSerializer.Serialize<UpdateProductRequest>(request, options);
-            var data = new StringContent(jsonContent, Encoding.UTF8, "application/json");
-
-            var response = await client.PutAsync($"{_restApiSettings.Categories!}/{id}", data);
-            response.EnsureSuccessStatusCode();
-            var content = await response.Content.ReadAsStringAsync();
-            var res = JsonSerializer.Deserialize<Category>(content);
-
-            return res!;
+            var errorContent = await response.Content.ReadAsStringAsync();
+            throw new Exception($"Request failed with status {response.StatusCode}: {errorContent}");
         }
-        catch (Exception e)
-        {
-            _logger.LogError(e, "error");
-            throw;
-        }
+        //response.EnsureSuccessStatusCode();
+        var content = await response.Content.ReadAsStringAsync();
+        var res = JsonSerializer.Deserialize<Category>(content);
+
+        return res!;
     }
 }

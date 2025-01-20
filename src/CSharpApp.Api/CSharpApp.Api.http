@@ -18,6 +18,12 @@ POST {{HostAddress}}/api/{{Version}}/addproduct
 Content-Type: application/json
 ###
 
+
+PUT {{HostAddress}}/api/{{Version}}/updateproduct/{{Id}}
+Content-Type: application/json
+
+###
+
 ### PRODUCTS SECTION ###
 
 
