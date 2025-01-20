@@ -7,15 +7,13 @@ public class ProductsService : IProductsService
     private readonly IHttpClientFactory _httpClientFactory;
     private readonly RestApiSettings _restApiSettings;
     private readonly ILogger<ProductsService> _logger;
-    private readonly ICategoriesService _categoriesService;
 
     public ProductsService(IOptions<RestApiSettings> restApiSettings, 
-        ILogger<ProductsService> logger, IHttpClientFactory httpClientFactory, ICategoriesService categoriesService)
+        ILogger<ProductsService> logger, IHttpClientFactory httpClientFactory)
     {
         _httpClientFactory = httpClientFactory;
         _restApiSettings = restApiSettings.Value;
         _logger = logger;
-        _categoriesService = categoriesService;
     }
 
     public async Task<IReadOnlyCollection<Product>> GetProducts()
