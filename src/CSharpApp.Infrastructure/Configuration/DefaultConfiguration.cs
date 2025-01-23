@@ -1,4 +1,5 @@
 using CSharpApp.Infrastructure.Authorization;
+using CSharpApp.Infrastructure.HttpHandler;
 
 namespace CSharpApp.Infrastructure.Configuration;
 
@@ -16,12 +17,16 @@ public static class DefaultConfiguration
         services.AddSingleton<ICategoriesService, CategoriesService>();
         services.AddSingleton<ITokenService, TokenService>();
 
+        services.AddTransient<LoggingHandler>();
+
         services.AddTransient<AuthenticationHandler>();
 
         services.AddHttpClient("productsApi", client =>
         {
             client.BaseAddress = new Uri(configuration!.GetSection(nameof(RestApiSettings)).GetSection("BaseUrl").Value!);
-        }).AddHttpMessageHandler<AuthenticationHandler>();
+        })
+        .AddHttpMessageHandler<AuthenticationHandler>()
+        .AddHttpMessageHandler<LoggingHandler>();
 
         return services;
     }
